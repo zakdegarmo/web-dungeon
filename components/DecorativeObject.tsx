@@ -70,10 +70,12 @@ export const SceneObject: React.FC<SceneObjectState & Omit<ThreeElements['group'
   // This Suspense boundary catches errors during model loading.
   return (
     <Suspense fallback={
-        <mesh {...props}>
-            <boxGeometry args={[10, 10, 10]} />
-            <meshStandardMaterial color="red" />
-        </mesh>
+        <group {...props}>
+            <mesh>
+                <boxGeometry args={[10, 10, 10]} />
+                <meshStandardMaterial color="red" />
+            </mesh>
+        </group>
     }>
         {type === 'hologram' ? (
             <HologramDisplay url={url} {...props} />
