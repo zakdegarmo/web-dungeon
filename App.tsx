@@ -1,9 +1,14 @@
 
 
+
+
+
 import React, { useState, useCallback } from 'react';
 import { SceneCanvas } from './components/SceneCanvas';
 import { ControlPanel } from './components/ScreenManager';
 import type { DoorData as OldDoorData } from './components/Doors';
+import { ChatHistory } from './components/ChatHistory';
+import { ChatBubble } from './components/Icons';
 
 // Define unified state structures for all scene objects
 export interface Transform {
@@ -44,6 +49,11 @@ export interface RoomConfig {
   floorColor: string;
 }
 
+export interface ChatMessage {
+  sender: 'user' | 'bot';
+  text: string;
+}
+
 
 // Define portal door data centrally so it can be used for both doors and screen positioning
 const portalDoorData: OldDoorData[] = [
@@ -58,14 +68,6 @@ const portalDoorData: OldDoorData[] = [
     { id: 'web-dungeon homepage', link: 'https://web-dungeon.vercel.app/', type: 'portal' },
 ];
 
-const PORTAL_DOOR_RADIUS = 220;
-const PORTAL_DOOR_Y = -110;
-const PORTAL_DOOR_SCALE = 1.4;
-
-const TOTAL_SCREENS = 8;
-const SCREEN_RADIUS = 180; // Decoupled from door radius
-const SCREEN_Y_POS = -85;
-
 const initialScreenUrls = [
   'https://zakdegarmo.github.io/MyOntology/',
   'https://zakdegarmo.github.io/ZaksNotepad/index.html',
@@ -77,38 +79,150 @@ const initialScreenUrls = [
   'https://my-os-3-d-ide.vercel.app/',
 ];
 
-// Generate initial screens positioned in a full circle
-const initialScreens: ScreenState[] = Array.from({ length: TOTAL_SCREENS }, (_, index) => {
-    const angle = (index / TOTAL_SCREENS) * Math.PI * 2;
-    const x = Math.cos(angle) * SCREEN_RADIUS;
-    const z = Math.sin(angle) * SCREEN_RADIUS;
-    
-    return {
-      id: index + 1,
-      url: initialScreenUrls[index],
-      isVisible: true,
-      position: [x, SCREEN_Y_POS, z],
-      rotation: [0, 0, 0],
-      scale: 1.6,
-    };
-});
+// Hardcoded initial positions for screens to lock in the layout
+const initialScreens: ScreenState[] = [
+  {
+    id: 1,
+    url: initialScreenUrls[0],
+    isVisible: true,
+    position: [180, -85, 0],
+    rotation: [0, 1.5707963267948966, 0],
+    scale: 1.6,
+  },
+  {
+    id: 2,
+    url: initialScreenUrls[1],
+    isVisible: true,
+    position: [127.27922061357857, -85, 127.27922061357857],
+    rotation: [0, 0.7853981633974483, 0],
+    scale: 1.6,
+  },
+  {
+    id: 3,
+    url: initialScreenUrls[2],
+    isVisible: true,
+    position: [0, -85, 180],
+    rotation: [0, 0, 0],
+    scale: 1.6,
+  },
+  {
+    id: 4,
+    url: initialScreenUrls[3],
+    isVisible: true,
+    position: [-127.27922061357856, -85, 127.27922061357857],
+    rotation: [0, -0.7853981633974483, 0],
+    scale: 1.6,
+  },
+  {
+    id: 5,
+    url: initialScreenUrls[4],
+    isVisible: true,
+    position: [-180, -85, 0],
+    rotation: [0, -1.5707963267948966, 0],
+    scale: 1.6,
+  },
+  {
+    id: 6,
+    url: initialScreenUrls[5],
+    isVisible: true,
+    position: [-127.27922061357857, -85, -127.27922061357856],
+    rotation: [0, -2.356194490192345, 0],
+    scale: 1.6,
+  },
+  {
+    id: 7,
+    url: initialScreenUrls[6],
+    isVisible: true,
+    position: [0, -85, -180],
+    rotation: [0, -3.141592653589793, 0],
+    scale: 1.6,
+  },
+  {
+    id: 8,
+    url: initialScreenUrls[7],
+    isVisible: true,
+    position: [127.27922061357856, -85, -127.27922061357857],
+    rotation: [0, -3.9269908169872414, 0],
+    scale: 1.6,
+  },
+];
 
-// Generate initial doors in a circle with full transform properties
-const initialDoors: DoorState[] = portalDoorData.map((door, index) => {
-    const angle = (index / portalDoorData.length) * Math.PI * 2;
-    const x = Math.cos(angle) * PORTAL_DOOR_RADIUS;
-    const z = Math.sin(angle) * PORTAL_DOOR_RADIUS;
-    const rotationY = -angle + Math.PI / 2; // Face the center
+// Hardcoded initial positions for doors to lock in the layout
+const initialDoors: DoorState[] = [
+  {
+    id: 'ontology',
+    name: 'Ontology',
+    url: 'https://zakdegarmo.github.io/MyOntology/',
+    position: [220, -110, 0],
+    rotation: [0, 1.5707963267948966, 0],
+    scale: 1.4,
+  },
+  {
+    id: 'notepad',
+    name: 'Notepad',
+    url: 'https://zakdegarmo.github.io/ZaksNotepad/index.html',
+    position: [168.5542152642095, -110, 141.2820323027551],
+    rotation: [0, 0.8726646259971648, 0],
+    scale: 1.4,
+  },
+  {
+    id: 'file-explorer',
+    name: 'File Explorer',
+    url: 'https://3-d-file-explorer.vercel.app/',
+    position: [38.20423349051557, -110, 216.7957665094825],
+    rotation: [0, 0.17453292519943295, 0],
+    scale: 1.4,
+  },
+  {
+    id: 'hap',
+    name: 'Hap',
+    url: 'https://hyper-aether-pilgrim.vercel.app/',
+    position: [-110, -110, 190.5255866034633],
+    rotation: [0, -0.5235987755982988, 0],
+    scale: 1.4,
+  },
+  {
+    id: '3d-molecule-lab',
+    name: '3d Molecule Lab',
+    url: 'https://3d-molecule-lab.vercel.app/',
+    position: [-206.7957665094825, -110, 75.25423349051566],
+    rotation: [0, -1.2217304763960306, 0],
+    scale: 1.4,
+  },
+  {
+    id: 'data-vis',
+    name: 'Data Vis',
+    url: 'https://data-vis-eosin.vercel.app/',
+    position: [-206.79576650948253, -110, -75.25423349051552],
+    rotation: [0, -1.9198621771937625, 0],
+    scale: 1.4,
+  },
+  {
+    id: 'font-fun',
+    name: 'Font Fun',
+    url: 'https://3d-ttf.vercel.app/',
+    position: [-110, -110, -190.52558660346327],
+    rotation: [0, -2.6179938779914944, 0],
+    scale: 1.4,
+  },
+  {
+    id: 'IDE',
+    name: 'IDE',
+    url: 'https://my-os-3-d-ide.vercel.app/',
+    position: [38.2042334905154, -110, -216.79576650948253],
+    rotation: [0, -3.316125578789226, 0],
+    scale: 1.4,
+  },
+  {
+    id: 'web-dungeon homepage',
+    name: 'Web Dungeon Homepage',
+    url: 'https://web-dungeon.vercel.app/',
+    position: [168.5542152642094, -110, -141.28203230275518],
+    rotation: [0, -4.014257279586958, 0],
+    scale: 1.4,
+  },
+];
 
-    return {
-        id: door.id,
-        name: door.id.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
-        url: door.link,
-        position: [x, PORTAL_DOOR_Y, z],
-        rotation: [0, rotationY, 0],
-        scale: PORTAL_DOOR_SCALE,
-    };
-});
 
 const initialSceneObjects: SceneObjectState[] = [];
 
@@ -138,6 +252,11 @@ const App: React.FC = () => {
   const [isManagerVisible, setIsManagerVisible] = useState(false);
   const [chatInput, setChatInput] = useState('');
   const [isBotChatting, setIsBotChatting] = useState(false);
+  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([
+    { sender: 'bot', text: initialMooseBotState.dialogue }
+  ]);
+  const [isChatVisible, setIsChatVisible] = useState(false);
+  const [apiKey, setApiKey] = useState('');
 
   const updateMainScreenUrl = (newUrl: string) => {
      setScreens(prevScreens => {
@@ -196,8 +315,20 @@ const App: React.FC = () => {
 
   const handleChatWithBot = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!chatInput.trim() || isBotChatting) return;
+    const trimmedInput = chatInput.trim();
+    if (!trimmedInput || isBotChatting) return;
 
+    if (!apiKey.trim()) {
+        const apiKeyMessage = 'Please enter your Gemini API key to chat with me.';
+        setMooseBot(prev => ({ ...prev, dialogue: apiKeyMessage }));
+        const botMessage: ChatMessage = { sender: 'bot', text: apiKeyMessage };
+        setChatHistory(prev => [...prev, botMessage]);
+        return;
+    }
+
+    const userMessage: ChatMessage = { sender: 'user', text: trimmedInput };
+    setChatHistory(prev => [...prev, userMessage]);
+    setChatInput('');
     setIsBotChatting(true);
     setMooseBot(prev => ({ ...prev, dialogue: 'Thinking...' }));
 
@@ -205,20 +336,27 @@ const App: React.FC = () => {
         const response = await fetch('/api/chat-with-bot', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: chatInput }),
+            body: JSON.stringify({ message: trimmedInput, apiKey }),
         });
 
         if (!response.ok) {
-            throw new Error(`API error: ${response.statusText}`);
+            const errorData = await response.json().catch(() => ({ message: `API error: ${response.statusText}` }));
+            throw new Error(errorData.message);
         }
 
         const data = await response.json();
-        setMooseBot(prev => ({ ...prev, dialogue: data.response }));
-        setChatInput('');
+        const botMessageText = data.response;
+
+        setMooseBot(prev => ({ ...prev, dialogue: botMessageText }));
+        const botMessage: ChatMessage = { sender: 'bot', text: botMessageText };
+        setChatHistory(prev => [...prev, botMessage]);
 
     } catch (error) {
         console.error("Failed to chat with bot:", error);
-        setMooseBot(prev => ({ ...prev, dialogue: 'Sorry, I had a connection error.' }));
+        const errorMessage = error instanceof Error ? error.message : 'Sorry, I had a connection error.';
+        setMooseBot(prev => ({ ...prev, dialogue: errorMessage }));
+        const botMessage: ChatMessage = { sender: 'bot', text: errorMessage };
+        setChatHistory(prev => [...prev, botMessage]);
     } finally {
         setIsBotChatting(false);
     }
@@ -244,6 +382,8 @@ const App: React.FC = () => {
           onClose={() => setIsManagerVisible(false)}
         />
       )}
+      
+      {isChatVisible && <ChatHistory history={chatHistory} onClose={() => setIsChatVisible(false)} />}
 
       <div className="w-full h-full">
         <SceneCanvas 
@@ -264,15 +404,27 @@ const App: React.FC = () => {
               <h1 className="text-2xl font-bold text-cyan-400 tracking-wider">MOOSE</h1>
               
               <form onSubmit={handleChatWithBot} className="flex items-center gap-2 w-full sm:w-auto sm:flex-grow max-w-xl">
+                  <button type="button" onClick={() => setIsChatVisible(v => !v)} className="bg-gray-700 hover:bg-gray-600 p-2 rounded-md transition-colors text-white flex-shrink-0" title="Toggle Chat History">
+                    <ChatBubble />
+                  </button>
                   <input
                       type="text"
                       value={chatInput}
                       onChange={(e) => setChatInput(e.target.value)}
                       placeholder="Ask MOOSE-BOT..."
-                      className="bg-gray-800 border border-gray-600 rounded-md px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+                      className="bg-gray-800 border border-gray-600 rounded-md px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full flex-grow"
                       disabled={isBotChatting}
                   />
-                  <button type="submit" className="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-md transition-colors disabled:opacity-50" disabled={isBotChatting}>
+                  <input
+                      type="password"
+                      value={apiKey}
+                      onChange={(e) => setApiKey(e.target.value)}
+                      placeholder="API Key"
+                      className="bg-gray-800 border border-gray-600 rounded-md px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 w-full flex-shrink"
+                      style={{maxWidth: '120px'}}
+                      aria-label="Gemini API Key"
+                  />
+                  <button type="submit" className="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-md transition-colors disabled:opacity-50 flex-shrink-0" disabled={isBotChatting}>
                       {isBotChatting ? '...' : 'Send'}
                   </button>
               </form>

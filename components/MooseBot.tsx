@@ -7,6 +7,14 @@ import { useThree, useFrame } from '@react-three/fiber';
 import type { ThreeElements } from '@react-three/fiber';
 import type { MooseBotState } from '../App';
 
+// FIX: Manually extend JSX.IntrinsicElements to include React Three Fiber's elements.
+// This is a workaround for environments where TypeScript's module augmentation may not be working correctly.
+declare global {
+  namespace JSX {
+    interface IntrinsicElements extends ThreeElements {}
+  }
+}
+
 type MooseBotProps = MooseBotState & ThreeElements['group'] & {
     onAnimationsLoaded: (names: string[]) => void;
 };
@@ -64,9 +72,26 @@ export const MooseBot: React.FC<MooseBotProps> = ({ url, dialogue, activeAnimati
         <group ref={group} {...props} dispose={null}>
             <primitive object={scene} />
             {dialogue && (
-                 <Html position={[0, 15, 0]} center wrapperClass="w-64">
-                    <div className="bg-black bg-opacity-70 text-white text-xs rounded-lg p-2 text-center shadow-lg backdrop-blur-sm">
-                        {dialogue}
+                 <Html position={[0, 12, 0]} center wrapperClass="w-64">
+                    <div className="relative filter drop-shadow-lg">
+                        <div 
+                            className="bg-white text-black text-sm rounded-xl p-3 text-center"
+                            style={{ fontFamily: "'Comic Sans MS', 'Comic Neue', cursive" }}
+                        >
+                            {dialogue}
+                        </div>
+                        <div 
+                            className="absolute left-1/2"
+                            style={{
+                                width: 0,
+                                height: 0,
+                                borderLeft: '10px solid transparent',
+                                borderRight: '10px solid transparent',
+                                borderTop: '10px solid white',
+                                bottom: '-10px',
+                                transform: 'translateX(-50%)'
+                            }}
+                        ></div>
                     </div>
                 </Html>
             )}

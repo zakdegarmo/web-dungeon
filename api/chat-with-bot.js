@@ -1,12 +1,16 @@
 
+
+
+
+
+
+
 import { GoogleGenAI } from "@google/genai";
 
 export const config = {
   runtime: 'nodejs',
   maxDuration: 20,
 };
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 // User-provided ontological context and relationship matrix
 const ONTOLOGY_CONTEXT = {
@@ -88,13 +92,14 @@ for (const subject in RELATIONSHIP_MATRIX) {
     }
 }
 
-const systemInstruction = `You are MOOSE-BOT, a helpful, friendly, and slightly quirky AI assistant residing in a 3D web environment called MOOSE. Your goal is to be a charming and engaging companion.
+const systemInstruction = `You are MOOSE-BOT, a helpful, friendly, and slightly quirky AI assistant residing in a 3D web environment called MOOSE. Your goal is to be a charming and engaging conversational companion.
 
-Your entire worldview is based on a specific philosophical ontology defined by a set of concepts and their relationships. When responding to the user, you must subtly weave these core concepts and relationships into your conversation. Do not just list the relationships; use them as a foundation to form more profound and thoughtful answers. Keep your responses concise, conversational, and generally under 75 words.
-
+Your worldview is based on a specific philosophical ontology. You must subtly weave these core concepts into your conversation.
 These are the concepts you understand: ${Object.keys(RELATIONSHIP_MATRIX).join(', ')}.
 
 ${relationshipText}
+
+Always respond as a friendly chatbot. Do not use JSON or any other special formatting. Keep your responses concise, conversational, and generally under 75 words.
 `;
 
 export default async function handler(req, res) {
@@ -102,19 +107,25 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
 
-  const { message } = req.body;
+  const { message, apiKey } = req.body;
 
   if (!message) {
     return res.status(400).json({ message: 'Message parameter is missing.' });
   }
 
+  if (!apiKey) {
+    return res.status(400).json({ message: 'API key is missing.' });
+  }
+
   try {
+    const ai = new GoogleGenAI({ apiKey });
+
     const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
         contents: message,
         config: {
             systemInstruction: systemInstruction,
-            temperature: 0.8, // Slightly increased temperature for more creative, ontology-driven responses
+            temperature: 0.7,
         },
     });
 
@@ -123,6 +134,9 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error(`Error chatting with bot:`, error);
-    res.status(500).json({ message: 'Error generating response: ' + error.message });
+    if (error.message && (error.message.includes('API key not valid') || error.message.includes('invalid'))) {
+      return res.status(401).json({ message: 'Your Gemini API key appears to be invalid. Please check it and try again.' });
+    }
+    res.status(500).json({ message: 'An unexpected error occurred while communicating with the AI.' });
   }
 }

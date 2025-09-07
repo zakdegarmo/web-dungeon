@@ -5,6 +5,14 @@ import { useFrame, useThree } from '@react-three/fiber';
 import type { Mesh, MeshStandardMaterial } from 'three';
 import type { ThreeElements } from '@react-three/fiber';
 
+// FIX: Manually extend JSX.IntrinsicElements to include React Three Fiber's elements.
+// This is a workaround for environments where TypeScript's module augmentation may not be working correctly.
+declare global {
+  namespace JSX {
+    interface IntrinsicElements extends ThreeElements {}
+  }
+}
+
 type HubProps = ThreeElements['mesh'] & {
     onToggleManager: () => void;
 };

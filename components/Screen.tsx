@@ -1,9 +1,18 @@
 
+
 import React, { useRef } from 'react';
 import { useGLTF, Html } from '@react-three/drei';
 import type { Group } from 'three';
 // FIX: Import ThreeElements to get correct prop types and help TypeScript recognize R3F's JSX elements.
 import type { ThreeElements } from '@react-three/fiber';
+
+// FIX: Manually extend JSX.IntrinsicElements to include React Three Fiber's elements.
+// This is a workaround for environments where TypeScript's module augmentation may not be working correctly.
+declare global {
+  namespace JSX {
+    interface IntrinsicElements extends ThreeElements {}
+  }
+}
 
 // FIX: An interface can only extend a simple identifier. Changed to a type alias using an intersection to correctly combine with ThreeElements['group'].
 type ScreenProps = ThreeElements['group'] & {

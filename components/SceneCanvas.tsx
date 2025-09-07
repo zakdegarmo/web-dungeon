@@ -1,7 +1,8 @@
 
 
 import React, { Suspense, memo } from 'react';
-import { Canvas } from '@react-three/fiber';
+// FIX: Add `type ThreeElements` to import to manually extend JSX namespace for R3F components
+import { Canvas, type ThreeElements } from '@react-three/fiber';
 import { Screen } from './Screen';
 import { Loader } from './Loader';
 import Door from './Doors';
@@ -11,6 +12,14 @@ import { PlayerControls } from './PlayerControls';
 import { MooseBot } from './MooseBot';
 import * as THREE from 'three';
 import type { ScreenState, DoorState, SceneObjectState, MooseBotState, RoomConfig } from '../App';
+
+// FIX: Manually extend JSX.IntrinsicElements to include React Three Fiber's elements.
+// This is a workaround for environments where TypeScript's module augmentation may not be working correctly.
+declare global {
+  namespace JSX {
+    interface IntrinsicElements extends ThreeElements {}
+  }
+}
 
 interface SceneCanvasProps {
   screens: ScreenState[];
