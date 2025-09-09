@@ -1,6 +1,6 @@
 
 import React, { useCallback, useState } from 'react';
-// FIX: Changed import from './icons' to './Icons' to resolve casing conflicts.
+// FIX: Correct casing for icons import to resolve module ambiguity.
 import { ModelIcon, LoadingIcon } from './Icons';
 
 interface ModelUploaderProps {

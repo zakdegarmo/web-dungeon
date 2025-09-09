@@ -1,7 +1,8 @@
+/// <reference types="@react-three/fiber" />
 import React, { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import type { Mesh, MeshStandardMaterial } from 'three';
-import type { ThreeElements } from '@react-three-fiber';
+import type { ThreeElements } from '@react-three/fiber';
 
 // Manually extend JSX.IntrinsicElements to include React Three Fiber's elements.
 // This is a workaround for environments where TypeScript's module augmentation may not be working correctly.

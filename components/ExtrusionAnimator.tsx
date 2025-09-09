@@ -1,5 +1,3 @@
-// FIX: Add a triple-slash directive to explicitly include React Three Fiber's types.
-// This augments the JSX namespace and resolves errors about missing properties on JSX.IntrinsicElements for R3F components.
 /// <reference types="@react-three/fiber" />
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';

@@ -1,4 +1,4 @@
-
+/// <reference types="@react-three/fiber" />
 import React, { useMemo } from 'react';
 import * as THREE from 'three';
 import type { PrimitiveType } from '../types';

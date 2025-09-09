@@ -1,4 +1,4 @@
-
+/// <reference types="@react-three/fiber" />
 import React, { useRef } from 'react';
 import { useGLTF, Html } from '@react-three/drei';
 import type { Group } from 'three';

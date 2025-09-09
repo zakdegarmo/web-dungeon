@@ -4,6 +4,7 @@ import { SceneCanvas } from './components/SceneCanvas';
 import { ControlPanel } from './components/ScreenManager';
 import type { DoorData as OldDoorData } from './components/Doors';
 import { ChatHistory } from './components/ChatHistory';
+// FIX: Correct casing for icons import to resolve module ambiguity.
 import { ChatBubble } from './components/Icons';
 import { ContextMenu } from './components/ContextMenu';
 import type { PrimitiveType } from './types';
@@ -560,6 +561,7 @@ const App: React.FC = () => {
                   placeholder="Enter Gemini API Key..."
                   className="bg-gray-800 border border-gray-600 rounded-md px-3 py-1.5 text-xs text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-purple-500 w-full max-w-xs"
                   aria-label="Gemini API Key"
+                  autoComplete="off"
               />
 
               <form onSubmit={handleChatWithBot} className="flex items-center gap-2 w-full flex-grow">

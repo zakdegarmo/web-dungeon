@@ -1,5 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
+// FIX: Correct casing for icons import to resolve module ambiguity.
 import { Eye, EyeOff } from './Icons';
 import type { ScreenState, DoorState, SceneObjectState, MooseBotState, RoomConfig, SceneObjectType, GeometryConfig } from '../App';
 import type { PrimitiveType } from '../types';
@@ -117,7 +118,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ screens, doors, scen
         };
         fetchFileContent();
     }
-  }, [selectedSourceFile, activeTab]);
+  }, [selectedSourceFile, activeTab, onCodeContextChange]);
 
   const handleApplyChanges = () => {
     onApply(localScreens, localDoors, localObjects, localBot, localRoomConfig);
@@ -643,6 +644,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ screens, doors, scen
                                onChange={(e) => onApiKeyChange(e.target.value)}
                                placeholder="Enter your key to enable generation..."
                                className="bg-gray-800 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+                               autoComplete="off"
                            />
                        </div>
                     </div>
