@@ -1,6 +1,6 @@
 
 import React, { useCallback, useState } from 'react';
-import { ModelIcon, LoadingIcon } from './Icons.tsx';
+import { ModelIcon, LoadingIcon } from './Icons';
 
 interface ModelUploaderProps {
   onModelFileChange: (file: File) => void;

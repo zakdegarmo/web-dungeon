@@ -4,7 +4,7 @@ import { SceneCanvas } from './components/SceneCanvas';
 import { ControlPanel } from './components/ScreenManager';
 import type { DoorData as OldDoorData } from './components/Doors';
 import { ChatHistory } from './components/ChatHistory';
-import { ChatBubble } from './components/Icons.tsx';
+import { ChatBubble } from './components/Icons';
 import { ContextMenu } from './components/ContextMenu';
 import type { PrimitiveType } from './types';
 

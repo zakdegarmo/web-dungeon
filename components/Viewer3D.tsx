@@ -6,7 +6,7 @@ import { TrackballControls, Center, Environment, PointerLockControls, Line, useH
 import type { TrackballControls as TrackballControlsImpl, PointerLockControls as PointerLockControlsImpl } from 'three-stdlib';
 import * as THREE from 'three';
 import { GLTFExporter } from 'three-stdlib';
-import { CrosshairIcon, OrbitIcon, ResetCameraIcon, ZoomInIcon, ZoomOutIcon } from './Icons.tsx';
+import { CrosshairIcon, OrbitIcon, ResetCameraIcon, ZoomInIcon, ZoomOutIcon } from './Icons';
 import { ExtrusionAnimator } from './ExtrusionAnimator';
 // FIX: Added PaintToolState to the type imports to support paint functionality.
 import type { TransformState, ModifiersState, Relationship, LoadedModel, GlyphObject, ObjectGeometrySettings, GlyphData, PrimitiveObject, OntologicalParameter, ConsoleLog, Oscillator, PaintToolState } from '../types';

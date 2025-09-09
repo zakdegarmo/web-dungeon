@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Eye, EyeOff } from './Icons.tsx';
+import { Eye, EyeOff } from './Icons';
 import type { ScreenState, DoorState, SceneObjectState, MooseBotState, RoomConfig, SceneObjectType, GeometryConfig } from '../App';
 import type { PrimitiveType } from '../types';
 
