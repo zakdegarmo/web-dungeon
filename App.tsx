@@ -4,8 +4,7 @@ import { SceneCanvas } from './components/SceneCanvas';
 import { ControlPanel } from './components/ScreenManager';
 import type { DoorData as OldDoorData } from './components/Doors';
 import { ChatHistory } from './components/ChatHistory';
-// FIX: Correct casing for icons import to resolve module ambiguity.
-import { ChatBubble } from './components/Icons';
+import { ChatBubble } from './components/Icons.tsx';
 import { ContextMenu } from './components/ContextMenu';
 import type { PrimitiveType } from './types';
 

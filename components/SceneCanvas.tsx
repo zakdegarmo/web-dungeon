@@ -39,30 +39,33 @@ interface SceneCanvasProps {
 }
 
 const Room = ({ size, shape, wallColor, floorColor, geometryConfig, onClick }: { size: number, shape: RoomConfig['shape'], wallColor: string, floorColor: string, geometryConfig: RoomConfig['geometryConfig'], onClick: (e: any) => void }) => {
-    const wallProps = {
-        'sphere': { geometry: <sphereGeometry args={[size, geometryConfig.sphere.widthSegments, geometryConfig.sphere.heightSegments]} />, position: [0,0,0] as const, rotation: [0,0,0] as const },
-        'box': { geometry: <boxGeometry args={[size * 2, size, size * 2, geometryConfig.box.widthSegments, geometryConfig.box.heightSegments, geometryConfig.box.depthSegments]} />, position: [0,0,0] as const, rotation: [0,0,0] as const },
-        'cylinder': { geometry: <cylinderGeometry args={[size, size, size, geometryConfig.cylinder.radialSegments, geometryConfig.cylinder.heightSegments, true]} />, position: [0,0,0] as const, rotation: [0,0,0] as const },
-        'cone': { geometry: <coneGeometry args={[size, size, geometryConfig.cone.radialSegments, geometryConfig.cone.heightSegments, true]} />, position: [0,0,0] as const, rotation: [0,0,0] as const },
-        'torus': { geometry: <torusGeometry args={[size, size / 4, geometryConfig.torus.radialSegments, geometryConfig.torus.tubularSegments]} />, position: [0, -size / 2 + size / 4, 0] as const, rotation: [Math.PI / 2, 0, 0] as const },
-        'icosahedron': { geometry: <icosahedronGeometry args={[size, geometryConfig.icosahedron.detail]} />, position: [0,0,0] as const, rotation: [0,0,0] as const },
-        'dodecahedron': { geometry: <dodecahedronGeometry args={[size, geometryConfig.dodecahedron.detail]} />, position: [0,0,0] as const, rotation: [0,0,0] as const },
-    }[shape];
+    // FIX: Explicitly type the dictionaries to ensure TypeScript infers position/rotation as tuples `[number, number, number]` instead of `number[]`, which is required by R3F components.
+    const wallPropsData: Record<RoomConfig['shape'], { geometry: JSX.Element; position: [number, number, number]; rotation: [number, number, number] }> = {
+        'sphere': { geometry: <sphereGeometry args={[size, geometryConfig.sphere.widthSegments, geometryConfig.sphere.heightSegments]} />, position: [0,0,0], rotation: [0,0,0] },
+        'box': { geometry: <boxGeometry args={[size * 2, size, size * 2, geometryConfig.box.widthSegments, geometryConfig.box.heightSegments, geometryConfig.box.depthSegments]} />, position: [0,0,0], rotation: [0,0,0] },
+        'cylinder': { geometry: <cylinderGeometry args={[size, size, size, geometryConfig.cylinder.radialSegments, geometryConfig.cylinder.heightSegments, true]} />, position: [0,0,0], rotation: [0,0,0] },
+        'cone': { geometry: <coneGeometry args={[size, size, geometryConfig.cone.radialSegments, geometryConfig.cone.heightSegments, true]} />, position: [0,0,0], rotation: [0,0,0] },
+        'torus': { geometry: <torusGeometry args={[size, size / 4, geometryConfig.torus.radialSegments, geometryConfig.torus.tubularSegments]} />, position: [0, -size / 2 + size / 4, 0], rotation: [Math.PI / 2, 0, 0] },
+        'icosahedron': { geometry: <icosahedronGeometry args={[size, geometryConfig.icosahedron.detail]} />, position: [0,0,0], rotation: [0,0,0] },
+        'dodecahedron': { geometry: <dodecahedronGeometry args={[size, geometryConfig.dodecahedron.detail]} />, position: [0,0,0], rotation: [0,0,0] },
+    };
+    const wallProps = wallPropsData[shape];
 
-    const floorProps = {
+    const floorPropsData: Record<RoomConfig['shape'], { geometry: JSX.Element; rotation: [number, number, number] }> = {
         'sphere': { 
             // Corrected radius for the circular floor inside the sphere. The floor is at Y = -size / 2.
             // By Pythagorean theorem, the floor radius is sqrt(size^2 - (size/2)^2).
             geometry: <circleGeometry args={[size * Math.sqrt(0.75), 64]} />, 
-            rotation: [-Math.PI / 2, 0, 0] as const 
+            rotation: [-Math.PI / 2, 0, 0] 
         },
-        'box': { geometry: <planeGeometry args={[size * 2, size * 2]} />, rotation: [-Math.PI / 2, 0, 0] as const },
-        'cylinder': { geometry: <circleGeometry args={[size, 64]} />, rotation: [-Math.PI / 2, 0, 0] as const },
-        'cone': { geometry: <circleGeometry args={[size, 64]} />, rotation: [-Math.PI / 2, 0, 0] as const },
-        'torus': { geometry: <circleGeometry args={[size - size / 4, 64]} />, rotation: [-Math.PI / 2, 0, 0] as const },
-        'icosahedron': { geometry: <circleGeometry args={[size * 0.85, 64]} />, rotation: [-Math.PI / 2, 0, 0] as const },
-        'dodecahedron': { geometry: <circleGeometry args={[size * 0.85, 64]} />, rotation: [-Math.PI / 2, 0, 0] as const },
-    }[shape];
+        'box': { geometry: <planeGeometry args={[size * 2, size * 2]} />, rotation: [-Math.PI / 2, 0, 0] },
+        'cylinder': { geometry: <circleGeometry args={[size, 64]} />, rotation: [-Math.PI / 2, 0, 0] },
+        'cone': { geometry: <circleGeometry args={[size, 64]} />, rotation: [-Math.PI / 2, 0, 0] },
+        'torus': { geometry: <circleGeometry args={[size - size / 4, 64]} />, rotation: [-Math.PI / 2, 0, 0] },
+        'icosahedron': { geometry: <circleGeometry args={[size * 0.85, 64]} />, rotation: [-Math.PI / 2, 0, 0] },
+        'dodecahedron': { geometry: <circleGeometry args={[size * 0.85, 64]} />, rotation: [-Math.PI / 2, 0, 0] },
+    };
+    const floorProps = floorPropsData[shape];
 
 
     return (

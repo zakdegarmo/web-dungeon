@@ -1,7 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-// FIX: Correct casing for icons import to resolve module ambiguity.
-import { Eye, EyeOff } from './Icons';
+import { Eye, EyeOff } from './Icons.tsx';
 import type { ScreenState, DoorState, SceneObjectState, MooseBotState, RoomConfig, SceneObjectType, GeometryConfig } from '../App';
 import type { PrimitiveType } from '../types';
 

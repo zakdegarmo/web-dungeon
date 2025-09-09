@@ -1,3 +1,4 @@
+
 /// <reference types="@react-three/fiber" />
 import React, { Suspense, useMemo, useEffect, useRef, useState, useCallback, useLayoutEffect, useImperativeHandle } from 'react';
 import { Canvas, useThree, useFrame, ThreeEvent } from '@react-three/fiber';
@@ -5,8 +6,7 @@ import { TrackballControls, Center, Environment, PointerLockControls, Line, useH
 import type { TrackballControls as TrackballControlsImpl, PointerLockControls as PointerLockControlsImpl } from 'three-stdlib';
 import * as THREE from 'three';
 import { GLTFExporter } from 'three-stdlib';
-// FIX: Correct casing for icons import to resolve module ambiguity.
-import { CrosshairIcon, OrbitIcon, ResetCameraIcon, ZoomInIcon, ZoomOutIcon } from './Icons';
+import { CrosshairIcon, OrbitIcon, ResetCameraIcon, ZoomInIcon, ZoomOutIcon } from './Icons.tsx';
 import { ExtrusionAnimator } from './ExtrusionAnimator';
 // FIX: Added PaintToolState to the type imports to support paint functionality.
 import type { TransformState, ModifiersState, Relationship, LoadedModel, GlyphObject, ObjectGeometrySettings, GlyphData, PrimitiveObject, OntologicalParameter, ConsoleLog, Oscillator, PaintToolState } from '../types';
