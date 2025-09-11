@@ -1,7 +1,15 @@
-/// <reference types="@react-three/fiber" />
+
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, type ThreeElements } from '@react-three/fiber';
+
+// Manually extend JSX.IntrinsicElements to include React Three Fiber's elements.
+// This is a workaround for environments where TypeScript's module augmentation may not be working correctly.
+declare global {
+  namespace JSX {
+    interface IntrinsicElements extends ThreeElements {}
+  }
+}
 
 interface ExtrusionAnimatorProps {
   geometry: THREE.BufferGeometry;

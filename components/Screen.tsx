@@ -1,5 +1,4 @@
-/// <reference types="@react-three/fiber" />
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { useGLTF, Html } from '@react-three/drei';
 import type { Group } from 'three';
 // Import ThreeElements to get correct prop types and help TypeScript recognize R3F's JSX elements.
@@ -14,15 +13,27 @@ declare global {
 }
 
 // An interface can only extend a simple identifier. Changed to a type alias using an intersection to correctly combine with ThreeElements['group'].
-type ScreenProps = ThreeElements['group'] & {
+// FIX: The component's `id` prop (string | number) conflicts with the underlying `group` element's `id` prop (number).
+// Using Omit prevents this conflict by not inheriting the `id` prop from `ThreeElements['group']`.
+type ScreenProps = Omit<ThreeElements['group'], 'id'> & {
+  id: string | number;
   isHologram?: boolean;
   url?: string;
 };
 
 // Removed React.FC and typed props directly to fix JSX intrinsic element errors.
-export const Screen = ({ isHologram = false, url = '/screen-browser.html', ...props }: ScreenProps) => {
+export const Screen = ({ id, isHologram = false, url = '/screen-browser.html', ...props }: ScreenProps) => {
   const group = useRef<Group>(null);
   const { nodes, materials } = useGLTF('/flatScreen.glb');
+
+  const finalUrl = useMemo(() => {
+      // If the URL is for our default screen browser, append the screen's ID
+      // so the child iframe knows who it is.
+      if (url === '/screen-browser.html' || url === 'screen-browser.html') {
+          return `${url}?screenId=${id}`;
+      }
+      return url;
+  }, [url, id]);
 
   return (
     <group ref={group} {...props} dispose={null}>
@@ -48,7 +59,7 @@ export const Screen = ({ isHologram = false, url = '/screen-browser.html', ...pr
             >
               <iframe
                 className="w-full h-full"
-                src={url}
+                src={finalUrl}
                 title="Embedded Browser"
                 sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
               />

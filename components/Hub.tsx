@@ -1,4 +1,4 @@
-/// <reference types="@react-three/fiber" />
+
 import React, { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import type { Mesh, MeshStandardMaterial } from 'three';

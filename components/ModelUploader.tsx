@@ -1,6 +1,7 @@
 
 import React, { useCallback, useState } from 'react';
-import { ModelIcon, LoadingIcon } from './Icons';
+// FIX: Correct casing for icons import to resolve module ambiguity.
+import { ModelIcon, LoadingIcon } from './Icons.tsx';
 
 interface ModelUploaderProps {
   onModelFileChange: (file: File) => void;

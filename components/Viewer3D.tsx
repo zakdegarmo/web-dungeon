@@ -1,12 +1,12 @@
 
-/// <reference types="@react-three/fiber" />
 import React, { Suspense, useMemo, useEffect, useRef, useState, useCallback, useLayoutEffect, useImperativeHandle } from 'react';
-import { Canvas, useThree, useFrame, ThreeEvent } from '@react-three/fiber';
+import { Canvas, useThree, useFrame, type ThreeEvent, type ThreeElements } from '@react-three/fiber';
 import { TrackballControls, Center, Environment, PointerLockControls, Line, useHelper, Edges } from '@react-three/drei';
 import type { TrackballControls as TrackballControlsImpl, PointerLockControls as PointerLockControlsImpl } from 'three-stdlib';
 import * as THREE from 'three';
 import { GLTFExporter } from 'three-stdlib';
-import { CrosshairIcon, OrbitIcon, ResetCameraIcon, ZoomInIcon, ZoomOutIcon } from './Icons';
+// FIX: Correct casing for icons import to resolve module ambiguity.
+import { CrosshairIcon, OrbitIcon, ResetCameraIcon, ZoomInIcon, ZoomOutIcon } from './Icons.tsx';
 import { ExtrusionAnimator } from './ExtrusionAnimator';
 // FIX: Added PaintToolState to the type imports to support paint functionality.
 import type { TransformState, ModifiersState, Relationship, LoadedModel, GlyphObject, ObjectGeometrySettings, GlyphData, PrimitiveObject, OntologicalParameter, ConsoleLog, Oscillator, PaintToolState } from '../types';
@@ -14,6 +14,14 @@ import { ColorPalette } from './ColorPalette';
 import { applyBend, applyTaper, applyTwist } from './geometryModifiers';
 import { getDisplayName } from '../utils/getDisplayName';
 import { setNestedProperty } from '../utils/propertyUtils';
+
+// Manually extend JSX.IntrinsicElements to include React Three Fiber's elements.
+// This is a workaround for environments where TypeScript's module augmentation may not be working correctly.
+declare global {
+  namespace JSX {
+    interface IntrinsicElements extends ThreeElements {}
+  }
+}
 
 export type CameraMode = 'orbit' | 'fly';
 

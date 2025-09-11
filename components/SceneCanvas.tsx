@@ -145,17 +145,13 @@ export const SceneCanvas: React.FC<SceneCanvasProps> = memo(({
               }}
             />
 
-            {screens.map(screen => (
-              screen.isVisible && (
-                <Screen 
-                  key={screen.id}
-                  position={screen.position as [number, number, number]}
-                  rotation={screen.rotation as [number, number, number]}
-                  scale={screen.scale}
-                  url={screen.url}
-                />
-              )
-            ))}
+           // Corrected code for SceneCanvas.tsx
+{screens.map(screen => (
+  screen.isVisible && (
+    <Screen {...screen} key={screen.id} />
+  )
+  )
+)}
 
             {doors.map(door => (
                 <Door key={door.id} data={door} />

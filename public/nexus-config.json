@@ -1,0 +1,367 @@
+{
+  "screens": [
+    {
+      "id": 1,
+      "isVisible": true,
+      "position": [
+        216,
+        -85,
+        0
+      ],
+      "rotation": [
+        0,
+        -1.57159265358979,
+        0
+      ],
+      "scale": 3,
+      "url": "https://react-unityhubpanel-component.vercel.app/"
+    },
+    {
+      "id": 3,
+      "isVisible": true,
+      "position": [
+        134.67379720148645,
+        -85,
+        168.87560021309443
+      ],
+      "rotation": [
+        0,
+        -2.46159265358979,
+        0
+      ],
+      "scale": 3,
+      "url": "https://dewey-ai-knowledge-sorter.vercel.app/"
+    },
+    {
+      "id": 4,
+      "isVisible": true,
+      "position": [
+        -48.0645217345639,
+        -85,
+        210.5844290312739
+      ],
+      "rotation": [
+        0,
+        2.90840734641021,
+        0
+      ],
+      "scale": 1.6,
+      "url": "https://my-os-3-d-ide.vercel.app/"
+    },
+    {
+      "id": 5,
+      "isVisible": true,
+      "position": [
+        -194.6092754669225,
+        -85,
+        93.71888764939258
+      ],
+      "rotation": [
+        0,
+        2.01840734641021,
+        0
+      ],
+      "scale": 1.6,
+      "url": "https://3d-molecule-lab.vercel.app/"
+    },
+    {
+      "id": 6,
+      "isVisible": true,
+      "position": [
+        -194.60927546692253,
+        -85,
+        -93.71888764939253
+      ],
+      "rotation": [
+        0,
+        1.11840734641021,
+        0
+      ],
+      "scale": 1.6,
+      "url": "https://3-d-file-explorer.vercel.app/"
+    },
+    {
+      "id": 7,
+      "isVisible": true,
+      "position": [
+        -48.064521734563954,
+        -85,
+        -210.5844290312739
+      ],
+      "rotation": [
+        0,
+        0.228407346410207,
+        0
+      ],
+      "scale": 1.6,
+      "url": "https://nexus-page-editor.vercel.app/"
+    },
+    {
+      "id": 8,
+      "isVisible": true,
+      "position": [
+        134.67379720148642,
+        -85,
+        -168.87560021309446
+      ],
+      "rotation": [
+        0,
+        -0.681592653589793,
+        0
+      ],
+      "scale": 1.6,
+      "url": "https://hyper-aether-pilgrim.vercel.app/"
+    },
+    {
+      "id": "screen-1757592887437",
+      "isVisible": true,
+      "url": "https://3d-ttf.vercel.app/",
+      "position": [
+        0,
+        -85,
+        -216
+      ],
+      "rotation": [
+        0,
+        3.141592653589793,
+        0
+      ],
+      "scale": 1.6
+    },
+    {
+      "id": "screen-1757592910697",
+      "isVisible": true,
+      "url": "https://data-vis-eosin.vercel.app/",
+      "position": [
+        0,
+        -85,
+        -216
+      ],
+      "rotation": [
+        0,
+        3.141592653589793,
+        0
+      ],
+      "scale": 1.6
+    },
+    {
+      "id": "screen-1757592918713",
+      "isVisible": true,
+      "url": "https://en.wikipedia.org/wiki/Main_Page",
+      "position": [
+        0,
+        -85,
+        -216
+      ],
+      "rotation": [
+        0,
+        3.141592653589793,
+        0
+      ],
+      "scale": 1.6
+    }
+  ],
+  "doors": [
+    {
+      "id": "ontology",
+      "name": "Ontology",
+      "url": "https://zakdegarmo.github.io/MyOntology/",
+      "position": [
+        210,
+        -135,
+        0
+      ],
+      "rotation": [
+        0,
+        1.5707963267948966,
+        0
+      ],
+      "scale": 1.4
+    },
+    {
+      "id": "notepad",
+      "name": "Notepad",
+      "url": "https://zakdegarmo.github.io/ZaksNotepad/index.html",
+      "position": [
+        160.8693330549854,
+        -135,
+        134.98539803417324
+      ],
+      "rotation": [
+        0,
+        0.8726646259971648,
+        0
+      ],
+      "scale": 1.4
+    },
+    {
+      "id": "file-explorer",
+      "name": "File Explorer",
+      "url": "https://3-d-file-explorer.vercel.app/",
+      "position": [
+        36.46611731005539,
+        -135,
+        206.8096281325637
+      ],
+      "rotation": [
+        0,
+        0.17453292519943298,
+        0
+      ],
+      "scale": 1.4
+    },
+    {
+      "id": "hap",
+      "name": "Hap",
+      "url": "https://hyper-aether-pilgrim.vercel.app/",
+      "position": [
+        -104.99999999999996,
+        -135,
+        181.86533479473212
+      ],
+      "rotation": [
+        0,
+        -0.5235987755982987,
+        0
+      ],
+      "scale": 1.4
+    },
+    {
+      "id": "3d-molecule-lab",
+      "name": "3d Molecule Lab",
+      "url": "https://3d-molecule-lab.vercel.app/",
+      "position": [
+        -197.33545036504074,
+        -135,
+        71.82423009839046
+      ],
+      "rotation": [
+        0,
+        -1.2217304763960306,
+        0
+      ],
+      "scale": 1.4
+    },
+    {
+      "id": "data-vis",
+      "name": "Data Vis",
+      "url": "https://data-vis-eosin.vercel.app/",
+      "position": [
+        -197.33545036504077,
+        -135,
+        -71.82423009839042
+      ],
+      "rotation": [
+        0,
+        -1.9198621771937625,
+        0
+      ],
+      "scale": 1.4
+    },
+    {
+      "id": "font-fun",
+      "name": "Font Fun",
+      "url": "https://3d-ttf.vercel.app/",
+      "position": [
+        -105.0000000000001,
+        -135,
+        -181.86533479473206
+      ],
+      "rotation": [
+        0,
+        -2.617993877991494,
+        0
+      ],
+      "scale": 1.4
+    },
+    {
+      "id": "IDE",
+      "name": "IDE",
+      "url": "https://my-os-3-d-ide.vercel.app/",
+      "position": [
+        36.466117310055296,
+        -135,
+        -206.80962813256372
+      ],
+      "rotation": [
+        0,
+        -3.316125578789226,
+        0
+      ],
+      "scale": 1.4
+    },
+    {
+      "id": "web-dungeon homepage",
+      "name": "Web Dungeon Homepage",
+      "url": "https://web-dungeon.vercel.app/",
+      "position": [
+        160.86933305498533,
+        -135,
+        -134.9853980341733
+      ],
+      "rotation": [
+        0,
+        -4.014257279586958,
+        0
+      ],
+      "scale": 1.4
+    }
+  ],
+  "sceneObjects": [],
+  "mooseBot": {
+    "url": "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/RobotExpressive/RobotExpressive.glb",
+    "dialogue": "Hello! I am MOOSE-BOT. Please provide a Gemini API key to chat with me.",
+    "activeAnimation": "WalkJump",
+    "position": [
+      0,
+      -125,
+      15
+    ],
+    "rotation": [
+      0,
+      3.141592653589793,
+      0
+    ],
+    "scale": 6
+  },
+  "room": {
+    "size": 300,
+    "shape": "cylinder",
+    "wallColor": "#279127",
+    "floorColor": "#0b320e",
+    "ambientLightIntensity": 10,
+    "pointLightIntensity": 20,
+    "pointLightColor": "#e45b0c",
+    "fogColor": "#280101",
+    "fogDensity": 66,
+    "geometryConfig": {
+      "sphere": {
+        "widthSegments": 128,
+        "heightSegments": 128
+      },
+      "box": {
+        "widthSegments": 1,
+        "heightSegments": 1,
+        "depthSegments": 1
+      },
+      "cylinder": {
+        "radialSegments": 64,
+        "heightSegments": 27
+      },
+      "cone": {
+        "radialSegments": 64,
+        "heightSegments": 1
+      },
+      "torus": {
+        "radialSegments": 16,
+        "tubularSegments": 100
+      },
+      "icosahedron": {
+        "detail": 1
+      },
+      "dodecahedron": {
+        "detail": 1
+      }
+    }
+  }
+}

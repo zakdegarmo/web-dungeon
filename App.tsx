@@ -1,13 +1,10 @@
-
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { SceneCanvas } from './components/SceneCanvas';
 import { ControlPanel } from './components/ScreenManager';
-import type { DoorData as OldDoorData } from './components/Doors';
 import { ChatHistory } from './components/ChatHistory';
-import { ChatBubble } from './components/Icons';
+import { ChatBubble } from './components/Icons.tsx';
 import { ContextMenu } from './components/ContextMenu';
 import type { PrimitiveType } from './types';
-
 
 // Define unified state structures for all scene objects
 export interface Transform {
@@ -72,21 +69,7 @@ export interface ChatMessage {
   text: string;
 }
 
-
-// Define portal door data centrally so it can be used for both doors and screen positioning
-const portalDoorData: OldDoorData[] = [
-    { id: 'ontology', link: 'https://zakdegarmo.github.io/MyOntology/', type: 'portal' },
-    { id: 'notepad', link: 'https://zakdegarmo.github.io/ZaksNotepad/index.html', type: 'portal' },
-    { id: 'file-explorer', link: 'https://3-d-file-explorer.vercel.app/', type: 'portal' },
-    { id: 'hap', link: 'https://hyper-aether-pilgrim.vercel.app/', type: 'portal'},
-    { id: '3d-molecule-lab', link: 'https://3d-molecule-lab.vercel.app/', type: 'portal' },
-    { id: 'data-vis', link: 'https://data-vis-eosin.vercel.app/', type: 'portal' },
-    { id: 'font-fun', link: 'https://3d-ttf.vercel.app/', type: 'portal' },
-    { id: 'IDE', link: 'https://my-os-3-d-ide.vercel.app/', type: 'portal' },
-    { id: 'web-dungeon homepage', link: 'https://web-dungeon.vercel.app/', type: 'portal' },
-];
-
-// Hardcoded initial positions for screens to lock in the layout
+// Hardcoded initial data is used as the default fallback config.
 const initialScreens: ScreenState[] = [
   {
     id: 1,
@@ -146,7 +129,6 @@ const initialScreens: ScreenState[] = [
   },
 ];
 
-// Hardcoded initial positions for doors to lock in the layout
 const initialDoors: DoorState[] = [
   {
     id: 'ontology',
@@ -222,7 +204,6 @@ const initialDoors: DoorState[] = [
   },
 ];
 
-
 const initialSceneObjects: SceneObjectState[] = [];
 
 const initialMooseBotState: MooseBotState = {
@@ -257,12 +238,26 @@ const initialRoomConfig: RoomConfig = {
     geometryConfig: initialGeometryConfig,
 };
 
+const ALLOWED_IFRAME_ORIGINS = [
+    'https://dewey-ai-knowledge-sorter.vercel.app',
+    'https://react-unityhubpanel-component.vercel.app',
+    'https://serverless-web-standard-api.vercel.app',
+    'https://my-os-3-d-ide.vercel.app',
+    'https://3d-molecule-lab.vercel.app',
+    'https://0-nexus.vercel.app',
+    'https://3-d-file-explorer.vercel.app',
+    'https://nexus-page-editor.vercel.app',
+    'https://hyper-aether-pilgrim.vercel.app',
+    'https://3d-ttf.vercel.app',
+    'https://data-vis-eosin.vercel.app',
+    window.location.origin // Allow self for local dev
+];
 
 const App: React.FC = () => {
   const [key, setKey] = useState<number>(0);
-  const [screens, setScreens] = useState<ScreenState[]>(initialScreens);
-  const [doors, setDoors] = useState<DoorState[]>(initialDoors);
-  const [sceneObjects, setSceneObjects] = useState<SceneObjectState[]>(initialSceneObjects);
+  const [screens, setScreens] = useState<ScreenState[]>([]);
+  const [doors, setDoors] = useState<DoorState[]>([]);
+  const [sceneObjects, setSceneObjects] = useState<SceneObjectState[]>([]);
   const [mooseBot, setMooseBot] = useState<MooseBotState>(initialMooseBotState);
   const [animationNames, setAnimationNames] = useState<string[]>([]);
   const [roomConfig, setRoomConfig] = useState<RoomConfig>(initialRoomConfig);
@@ -278,12 +273,133 @@ const App: React.FC = () => {
   const [transformMode, setTransformMode] = useState<'translate' | 'scale' | null>(null);
   const [apiKey, setApiKey] = useState('');
   const [codeContext, setCodeContext] = useState<string>('');
+  const isInitialMount = useRef(true);
+
+  const handleLoadConfiguration = useCallback((config: { screens?: ScreenState[]; doors?: DoorState[]; sceneObjects?: SceneObjectState[], mooseBot?: MooseBotState, room?: Partial<RoomConfig> }) => {
+    if (config.screens) setScreens(config.screens);
+    if (config.doors) setDoors(config.doors);
+    if (config.sceneObjects) setSceneObjects(config.sceneObjects);
+    if (config.mooseBot) setMooseBot(config.mooseBot);
+    if (config.room) {
+        const loadedRoomConfig = config.room;
+        const mergedGeometryConfig = {
+            ...initialRoomConfig.geometryConfig,
+            ...(loadedRoomConfig.geometryConfig || {}),
+        };
+        const finalRoomConfig = {
+            ...initialRoomConfig,
+            ...loadedRoomConfig,
+            geometryConfig: mergedGeometryConfig,
+        };
+        setRoomConfig(finalRoomConfig);
+    }
+    setKey(prevKey => prevKey + 1); // Re-render canvas
+    setIsManagerVisible(false); // Close panel after loading
+  }, [initialRoomConfig]);
+
+  // Load config from localStorage or fetch default on initial mount
+  useEffect(() => {
+    const loadConfig = async () => {
+        try {
+            const savedConfigJSON = localStorage.getItem('moose-config');
+            if (savedConfigJSON) {
+                const config = JSON.parse(savedConfigJSON);
+                handleLoadConfiguration(config);
+            } else {
+                const response = await fetch('/nexus-config.json');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch default config');
+                }
+                const defaultConfig = await response.json();
+                handleLoadConfiguration(defaultConfig);
+            }
+        } catch (error) {
+            console.error("Failed to load configuration:", error);
+            // Fallback to hardcoded initial data if no file is found and no localStorage data exists
+            handleLoadConfiguration({
+                screens: initialScreens,
+                doors: initialDoors,
+                sceneObjects: initialSceneObjects,
+                mooseBot: initialMooseBotState,
+                room: initialRoomConfig
+            });
+            localStorage.removeItem('moose-config'); // Clear potentially corrupted data
+        }
+    };
+    loadConfig();
+  }, [handleLoadConfiguration]);
+
+  // Auto-save config to localStorage on any state change
+  useEffect(() => {
+    // We skip the first render to avoid overwriting a loaded config with the initial default state.
+    if (isInitialMount.current) {
+        isInitialMount.current = false;
+        return;
+    }
+
+    try {
+        const configToSave = {
+            screens,
+            doors,
+            sceneObjects,
+            mooseBot,
+            room: roomConfig,
+        };
+        localStorage.setItem('moose-config', JSON.stringify(configToSave));
+    } catch (error) {
+        console.error("Failed to save configuration to localStorage", error);
+    }
+  }, [screens, doors, sceneObjects, mooseBot, roomConfig]);
 
   useEffect(() => {
     const storedKey = localStorage.getItem('gemini-api-key');
     if (storedKey) {
         setApiKey(storedKey);
     }
+  }, []);
+  
+  // Effect for handling communication from iframes
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+        // Security: only accept messages from allowed origins
+        if (!ALLOWED_IFRAME_ORIGINS.includes(event.origin)) {
+            return;
+        }
+
+        const { type, payload } = event.data;
+        
+        switch (type) {
+            case 'IFRAME_READY': {
+                const { screenId } = payload;
+                if (!screenId) return;
+                
+                // When an iframe is ready, check for its saved state and send it back
+                const savedStateJSON = localStorage.getItem(`iframe-state-${screenId}`);
+                if (savedStateJSON && event.source) {
+                    try {
+                        const savedState = JSON.parse(savedStateJSON);
+                        (event.source as Window).postMessage({ type: 'RESTORE_STATE', payload: { state: savedState } }, event.origin);
+                    } catch (e) {
+                         console.error(`Failed to parse saved state for screen ${screenId}`, e);
+                    }
+                }
+                break;
+            }
+            case 'SAVE_IFRAME_STATE': {
+                const { screenId, state } = payload;
+                if (!screenId || !state) return;
+
+                // Save the internal state of a specific iframe to local storage
+                localStorage.setItem(`iframe-state-${screenId}`, JSON.stringify(state));
+                break;
+            }
+        }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => {
+        window.removeEventListener('message', handleMessage);
+    };
   }, []);
 
   const handleApiKeyChange = (key: string) => {
@@ -304,29 +420,6 @@ const App: React.FC = () => {
     setMooseBot(updatedBot);
     setRoomConfig(updatedRoomConfig);
     setKey(prevKey => prevKey + 1); // Re-render canvas
-  };
-
-  const handleLoadConfiguration = (config: { screens?: ScreenState[]; doors?: DoorState[]; sceneObjects?: SceneObjectState[], mooseBot?: MooseBotState, room?: Partial<RoomConfig> }) => {
-    if (config.screens) setScreens(config.screens);
-    if (config.doors) setDoors(config.doors);
-    if (config.sceneObjects) setSceneObjects(config.sceneObjects);
-    if (config.mooseBot) setMooseBot(config.mooseBot);
-    if (config.room) {
-        const loadedRoomConfig = config.room;
-        // Deep merge geometryConfig to ensure defaults are kept for any missing properties
-        const mergedGeometryConfig = {
-            ...initialRoomConfig.geometryConfig,
-            ...(loadedRoomConfig.geometryConfig || {}),
-        };
-        const finalRoomConfig = {
-            ...initialRoomConfig, // Base defaults
-            ...loadedRoomConfig,  // Loaded values override base
-            geometryConfig: mergedGeometryConfig, // Use the carefully merged geometry config
-        };
-        setRoomConfig(finalRoomConfig);
-    }
-    setKey(prevKey => prevKey + 1); // Re-render canvas
-    setIsManagerVisible(false); // Close panel after loading
   };
 
   const handleChatWithBot = async (e: React.FormEvent) => {
@@ -358,11 +451,9 @@ const App: React.FC = () => {
             const errorText = await response.text();
             let errorMessage = `API Error: ${response.status} ${response.statusText}`;
             try {
-                // Try to parse as JSON, as the server might send a structured error
                 const errorJson = JSON.parse(errorText);
                 errorMessage = errorJson.message || errorMessage;
             } catch (e) {
-                // Not JSON, maybe it's the error message itself or an HTML page
                 if (errorText) {
                     errorMessage = errorText.substring(0, 200); // Truncate long HTML errors
                 }

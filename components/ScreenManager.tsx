@@ -1,6 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Eye, EyeOff } from './Icons';
+// FIX: Correct casing for icons import to resolve module ambiguity.
+import { Eye, EyeOff } from './Icons.tsx';
 import type { ScreenState, DoorState, SceneObjectState, MooseBotState, RoomConfig, SceneObjectType, GeometryConfig } from '../App';
 import type { PrimitiveType } from '../types';
 
@@ -69,6 +70,45 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ screens, doors, scen
   const [selectedSourceFile, setSelectedSourceFile] = useState<string>('');
   const [primitiveToAdd, setPrimitiveToAdd] = useState<PrimitiveType>('box');
 
+  const handleAddScreen = () => {
+    const newScreen: ScreenState = {
+      id: `screen-${Date.now()}`,
+      isVisible: true,
+      url: 'https://en.wikipedia.org/wiki/Main_Page',
+      position: [0, -85, -screenLayoutRadius],
+      rotation: [0, Math.PI, 0],
+      scale: 1.6
+    };
+    setLocalScreens(prev => [...prev, newScreen]);
+  };
+
+  const handleAddDoor = () => {
+    const newDoor: DoorState = {
+      id: `door-${Date.now()}`,
+      name: 'New Portal',
+      url: 'https://github.com',
+      position: [0, -110, -doorLayoutRadius],
+      rotation: [0, Math.PI, 0],
+      scale: 1.4
+    };
+    setLocalDoors(prev => [...prev, newDoor]);
+  };
+  
+  const handleScreenChange = (id: string | number, field: keyof ScreenState, value: any) => {
+    setLocalScreens(prev => 
+      prev.map(screen => 
+        screen.id === id ? { ...screen, [field]: value } : screen
+      )
+    );
+  };
+  
+  const handleDoorChange = (id: string | number, field: keyof DoorState, value: any) => {
+    setLocalDoors(prev =>
+      prev.map(door =>
+        door.id === id ? { ...door, [field]: value } : door
+      )
+    );
+  };
 
   // When a new config is loaded via props, sync the local state for the room and layout radii.
   useEffect(() => {
@@ -340,7 +380,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ screens, doors, scen
     if (type === 'objects') setLocalObjects(prev => prev.filter(o => o.id !== id));
   };
   
-  const handleItemChange = (id: number | string, field: string, value: any) => {
+  const handleObjectChange = (id: number | string, field: string, value: any) => {
     setLocalObjects(prev => prev.map(o => o.id === id ? { ...o, [field]: value } : o));
   };
   
@@ -419,7 +459,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ screens, doors, scen
                 <div className="space-y-4">
                      <div className="flex justify-between items-center">
                         <h3 className="text-lg font-semibold text-cyan-300">Screens</h3>
-                        <button onClick={() => {}} className="bg-cyan-600 px-3 py-1 rounded-md text-sm">Add Screen</button>
+                        <button onClick={handleAddScreen} className="bg-cyan-600 px-3 py-1 rounded-md text-sm">Add Screen</button>
                     </div>
                     <div className="flex items-center gap-4">
                         <SliderInput label="Arrange Radius" value={screenLayoutRadius} onChange={e => setScreenLayoutRadius(Number(e.target.value))} min={50} max={300} step={1} className="flex-grow" />
@@ -427,14 +467,14 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ screens, doors, scen
                     </div>
                     {localScreens.map(s => (
                         <div key={s.id} className="bg-gray-700/50 p-3 rounded-md relative">
-                            <RemoveButton onClick={() => {}} />
+                            <RemoveButton onClick={() => removeItem('screens', s.id)} />
                             <div className="flex items-center gap-4">
-                                <input type="text" placeholder="URL" value={s.url || ''} onChange={e => {}} className="w-full bg-gray-800 p-2 rounded-md" />
-                                <button onClick={() => {}} className="text-cyan-400">
+                                <input type="text" placeholder="URL" value={s.url || ''} onChange={e => handleScreenChange(s.id, 'url', e.target.value)} className="w-full bg-gray-800 p-2 rounded-md" />
+                                <button onClick={() => handleScreenChange(s.id, 'isVisible', !s.isVisible)} className="text-cyan-400">
                                     {s.isVisible ? <Eye /> : <EyeOff />}
                                 </button>
                             </div>
-                            {renderTransformControls(s, (field, value) => {})}
+                            {renderTransformControls(s, (field, value) => handleScreenChange(s.id, field as keyof ScreenState, value))}
                         </div>
                     ))}
                 </div>
@@ -444,7 +484,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ screens, doors, scen
                 <div className="space-y-4">
                     <div className="flex justify-between items-center">
                         <h3 className="text-lg font-semibold text-cyan-300">Doors</h3>
-                        <button onClick={() => {}} className="bg-cyan-600 px-3 py-1 rounded-md text-sm">Add Door</button>
+                        <button onClick={handleAddDoor} className="bg-cyan-600 px-3 py-1 rounded-md text-sm">Add Door</button>
                     </div>
                      <div className="flex items-center gap-4">
                         <SliderInput label="Arrange Radius" value={doorLayoutRadius} onChange={e => setDoorLayoutRadius(Number(e.target.value))} min={50} max={300} step={1} className="flex-grow" />
@@ -452,12 +492,12 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ screens, doors, scen
                     </div>
                     {localDoors.map(d => (
                          <div key={d.id} className="bg-gray-700/50 p-3 rounded-md relative">
-                            <RemoveButton onClick={() => {}} />
+                            <RemoveButton onClick={() => removeItem('doors', d.id)} />
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <input type="text" placeholder="Name" value={d.name} onChange={e => {}} className="w-full bg-gray-800 p-2 rounded-md" />
-                                <input type="text" placeholder="URL" value={d.url} onChange={e => {}} className="w-full bg-gray-800 p-2 rounded-md" />
+                                <input type="text" placeholder="Name" value={d.name} onChange={e => handleDoorChange(d.id, 'name', e.target.value)} className="w-full bg-gray-800 p-2 rounded-md" />
+                                <input type="text" placeholder="URL" value={d.url} onChange={e => handleDoorChange(d.id, 'url', e.target.value)} className="w-full bg-gray-800 p-2 rounded-md" />
                             </div>
-                            {renderTransformControls(d, (field, value) => {})}
+                            {renderTransformControls(d, (field, value) => handleDoorChange(d.id, field as keyof DoorState, value))}
                         </div>
                     ))}
                 </div>
@@ -516,14 +556,14 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ screens, doors, scen
                                 </div>
                             ) : (
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <input type="text" placeholder="Model URL" value={o.url || ''} onChange={e => handleItemChange(o.id, 'url', e.target.value)} className="w-full bg-gray-800 p-2 rounded-md" />
-                                    <select value={o.type} onChange={e => handleItemChange(o.id, 'type', e.target.value)} className="w-full bg-gray-800 p-2 rounded-md">
+                                    <input type="text" placeholder="Model URL" value={o.url || ''} onChange={e => handleObjectChange(o.id, 'url', e.target.value)} className="w-full bg-gray-800 p-2 rounded-md" />
+                                    <select value={o.type} onChange={e => handleObjectChange(o.id, 'type', e.target.value as SceneObjectType)} className="w-full bg-gray-800 p-2 rounded-md">
                                         <option value="model">Model</option>
                                         <option value="hologram">Hologram</option>
                                     </select>
                                 </div>
                             )}
-                            {renderTransformControls(o, (field, value) => handleItemChange(o.id, field, value))}
+                            {renderTransformControls(o, (field, value) => handleObjectChange(o.id, field, value))}
                         </div>
                     ))}
                 </div>

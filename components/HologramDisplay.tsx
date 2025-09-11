@@ -1,4 +1,3 @@
-/// <reference types="@react-three/fiber" />
 import React, { useState, useEffect, Suspense } from 'react';
 import * as THREE from 'three';
 import type { ThreeElements } from '@react-three/fiber';
@@ -122,6 +121,8 @@ export const HologramDisplay: React.FC<HologramDisplayProps> = ({ url, ...props 
                     screen.isVisible && (
                         <Screen
                             key={`hologram-screen-${screen.id}`}
+                            // FIX: The Screen component requires an 'id' prop.
+                            id={screen.id}
                             position={screen.position}
                             rotation={screen.rotation}
                             scale={screen.scale}

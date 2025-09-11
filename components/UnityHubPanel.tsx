@@ -1,3 +1,4 @@
+
 import React, { useRef, useState, useEffect } from 'react';
 
 // --- INLINED DEPENDENCIES ---
@@ -103,8 +104,61 @@ export const UnityHubPanel: React.FC<UnityHubPanelProps> = ({ className }) => {
   const [error, setError] = useState('');
   const [contextMenu, setContextMenu] = useState<{ x: number, y: number, tabId: string } | null>(null);
   const [showWarning, setShowWarning] = useState(true);
+  const screenIdRef = useRef<string | null>(null);
+  const isInitialLoad = useRef(true);
 
   const activeTab = activeTabId ? tabs[activeTabId] : null;
+  
+  // Setup communication with parent window (MOOSE app)
+  useEffect(() => {
+    // 1. Identify self by parsing screenId from URL
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('screenId');
+    if (id) {
+        screenIdRef.current = id;
+    }
+
+    // 2. Listen for messages from the parent
+    const handleMessage = (event: MessageEvent) => {
+        // A basic security check for origin could be added here if needed
+        const { type, payload } = event.data;
+        if (type === 'RESTORE_STATE' && payload.state) {
+            isInitialLoad.current = false; // Don't save state on the first render after restoring
+            setTabs(payload.state.tabs || {});
+            setActiveTabId(payload.state.activeTabId || null);
+        }
+    };
+    window.addEventListener('message', handleMessage);
+
+    // 3. Announce readiness to the parent to receive state
+    if (screenIdRef.current) {
+        window.parent.postMessage({
+            type: 'IFRAME_READY',
+            payload: { screenId: screenIdRef.current }
+        }, '*'); // Use a specific origin in production
+    }
+
+    return () => {
+        window.removeEventListener('message', handleMessage);
+    }
+  }, []);
+
+  // Effect to save state back to parent whenever it changes
+  useEffect(() => {
+    if (isInitialLoad.current) {
+        isInitialLoad.current = false;
+        return; // Don't save initial empty state
+    }
+    
+    if (screenIdRef.current) {
+        const stateToSave = { tabs, activeTabId };
+         window.parent.postMessage({
+            type: 'SAVE_IFRAME_STATE',
+            payload: { screenId: screenIdRef.current, state: stateToSave }
+        }, '*'); // Use a specific origin in production
+    }
+  }, [tabs, activeTabId]);
+
 
   // Sync the address bar with the active tab's current URL
   useEffect(() => {
