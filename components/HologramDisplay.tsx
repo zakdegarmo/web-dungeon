@@ -1,3 +1,5 @@
+// FIX: Add reference to react-three/fiber types to ensure JSX elements are recognized.
+/// <reference types="@react-three/fiber" />
 import React, { useState, useEffect, Suspense } from 'react';
 import * as THREE from 'three';
 import type { ThreeElements } from '@react-three/fiber';

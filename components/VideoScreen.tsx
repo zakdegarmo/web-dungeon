@@ -1,4 +1,5 @@
-
+// FIX: Add reference to react-three/fiber types to ensure JSX elements are recognized.
+/// <reference types="@react-three/fiber" />
 import React from 'react';
 import { useVideoTexture } from '@react-three/drei';
 // The `MeshProps` type is not reliably exported from '@react-three/fiber'. The recommended approach is to use `ThreeElements['mesh']` for mesh component props.

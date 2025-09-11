@@ -1,4 +1,5 @@
-
+// FIX: Add reference to react-three/fiber types to ensure JSX elements are recognized.
+/// <reference types="@react-three/fiber" />
 import React, { Suspense, useEffect, useRef, forwardRef } from 'react';
 import * as THREE from 'three';
 import { useGLTF, useAnimations } from '@react-three/drei';

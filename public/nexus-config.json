@@ -10,7 +10,7 @@
       ],
       "rotation": [
         0,
-        -1.57159265358979,
+        1.5707963267948966,
         0
       ],
       "scale": 3,
@@ -20,13 +20,13 @@
       "id": 3,
       "isVisible": true,
       "position": [
-        134.67379720148645,
+        174.74767078498866,
         -85,
-        168.87560021309443
+        126.9616144951742
       ],
       "rotation": [
         0,
-        -2.46159265358979,
+        0.9424777960769379,
         0
       ],
       "scale": 3,
@@ -36,80 +36,80 @@
       "id": 4,
       "isVisible": true,
       "position": [
-        -48.0645217345639,
+        66.74767078498866,
         -85,
-        210.5844290312739
+        205.42820751975316
       ],
       "rotation": [
         0,
-        2.90840734641021,
+        0.3141592653589793,
         0
       ],
-      "scale": 1.6,
+      "scale": 3,
       "url": "https://my-os-3-d-ide.vercel.app/"
     },
     {
       "id": 5,
       "isVisible": true,
       "position": [
-        -194.6092754669225,
+        -66.74767078498863,
         -85,
-        93.71888764939258
+        205.4282075197532
       ],
       "rotation": [
         0,
-        2.01840734641021,
+        -0.3141592653589793,
         0
       ],
-      "scale": 1.6,
+      "scale": 3,
       "url": "https://3d-molecule-lab.vercel.app/"
     },
     {
       "id": 6,
       "isVisible": true,
       "position": [
-        -194.60927546692253,
+        -174.74767078498863,
         -85,
-        -93.71888764939253
+        126.96161449517422
       ],
       "rotation": [
         0,
-        1.11840734641021,
+        -0.9424777960769379,
         0
       ],
-      "scale": 1.6,
+      "scale": 3,
       "url": "https://3-d-file-explorer.vercel.app/"
     },
     {
       "id": 7,
       "isVisible": true,
       "position": [
-        -48.064521734563954,
+        -216,
         -85,
-        -210.5844290312739
+        2.645237086158283e-14
       ],
       "rotation": [
         0,
-        0.228407346410207,
+        -1.5707963267948966,
         0
       ],
-      "scale": 1.6,
+      "scale": 3,
       "url": "https://nexus-page-editor.vercel.app/"
     },
     {
       "id": 8,
       "isVisible": true,
       "position": [
-        134.67379720148642,
+        -174.74767078498868,
         -85,
-        -168.87560021309446
+        -126.96161449517417
       ],
       "rotation": [
         0,
-        -0.681592653589793,
+        -2.199114857512855,
         0
       ],
-      "scale": 1.6,
+      "scale": 3,
       "url": "https://hyper-aether-pilgrim.vercel.app/"
     },
     {
@@ -117,48 +117,48 @@
       "isVisible": true,
       "url": "https://3d-ttf.vercel.app/",
       "position": [
-        0,
+        -66.74767078498867,
         -85,
-        -216
+        -205.42820751975316
       ],
       "rotation": [
         0,
-        3.141592653589793,
+        -2.827433388230814,
         0
       ],
-      "scale": 1.6
+      "scale": 3
     },
     {
       "id": "screen-1757592910697",
       "isVisible": true,
       "url": "https://data-vis-eosin.vercel.app/",
       "position": [
-        0,
+        66.7476707849886,
         -85,
-        -216
+        -205.4282075197532
       ],
       "rotation": [
         0,
-        3.141592653589793,
+        -3.4557519189487724,
         0
       ],
-      "scale": 1.6
+      "scale": 3
     },
     {
       "id": "screen-1757592918713",
       "isVisible": true,
       "url": "https://en.wikipedia.org/wiki/Main_Page",
       "position": [
-        0,
+        174.74767078498863,
         -85,
-        -216
+        -126.96161449517425
       ],
       "rotation": [
         0,
-        3.141592653589793,
+        -4.084070449666731,
         0
       ],
-      "scale": 1.6
+      "scale": 3
     }
   ],
   "doors": [
@@ -167,7 +167,7 @@
       "name": "Ontology",
       "url": "https://zakdegarmo.github.io/MyOntology/",
       "position": [
-        210,
+        250,
         -135,
         0
       ],
@@ -183,9 +183,9 @@
       "name": "Notepad",
       "url": "https://zakdegarmo.github.io/ZaksNotepad/index.html",
       "position": [
-        160.8693330549854,
+        191.5111107797445,
         -135,
-        134.98539803417324
+        160.6969024216348
       ],
       "rotation": [
         0,
@@ -199,9 +199,9 @@
       "name": "File Explorer",
       "url": "https://3-d-file-explorer.vercel.app/",
       "position": [
-        36.46611731005539,
+        43.412044416732606,
         -135,
-        206.8096281325637
+        246.201938253052
       ],
       "rotation": [
         0,
@@ -215,9 +215,9 @@
       "name": "Hap",
       "url": "https://hyper-aether-pilgrim.vercel.app/",
       "position": [
-        -104.99999999999996,
+        -124.99999999999994,
         -135,
-        181.86533479473212
+        216.50635094610968
       ],
       "rotation": [
         0,
@@ -231,9 +231,9 @@
       "name": "3d Molecule Lab",
       "url": "https://3d-molecule-lab.vercel.app/",
       "position": [
-        -197.33545036504074,
+        -234.92315519647707,
         -135,
-        71.82423009839046
+        85.50503583141722
       ],
       "rotation": [
         0,
@@ -247,9 +247,9 @@
       "name": "Data Vis",
       "url": "https://data-vis-eosin.vercel.app/",
       "position": [
-        -197.33545036504077,
+        -234.9231551964771,
         -135,
-        -71.82423009839042
+        -85.50503583141716
       ],
       "rotation": [
         0,
@@ -263,9 +263,9 @@
       "name": "Font Fun",
       "url": "https://3d-ttf.vercel.app/",
       "position": [
-        -105.0000000000001,
+        -125.00000000000011,
         -135,
-        -181.86533479473206
+        -216.5063509461096
       ],
       "rotation": [
         0,
@@ -279,9 +279,9 @@
       "name": "IDE",
       "url": "https://my-os-3-d-ide.vercel.app/",
       "position": [
-        36.466117310055296,
+        43.41204441673249,
         -135,
-        -206.80962813256372
+        -246.20193825305202
       ],
       "rotation": [
         0,
@@ -295,9 +295,9 @@
       "name": "Web Dungeon Homepage",
       "url": "https://web-dungeon.vercel.app/",
       "position": [
-        160.86933305498533,
+        191.51111077974446,
         -135,
-        -134.9853980341733
+        -160.6969024216349
       ],
       "rotation": [
         0,
@@ -313,20 +313,20 @@
     "dialogue": "Hello! I am MOOSE-BOT. Please provide a Gemini API key to chat with me.",
     "activeAnimation": "WalkJump",
     "position": [
-      0,
-      -125,
-      15
+      25,
+      -150,
+      25
     ],
     "rotation": [
       0,
       3.141592653589793,
       0
     ],
-    "scale": 6
+    "scale": 1.1
   },
   "room": {
     "size": 300,
-    "shape": "cylinder",
+    "shape": "sphere",
     "wallColor": "#279127",
     "floorColor": "#0b320e",
     "ambientLightIntensity": 10,

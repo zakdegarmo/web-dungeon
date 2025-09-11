@@ -1,4 +1,4 @@
-/// <reference types="@react-three/fiber" />
+
 import React, { Suspense, memo, useRef } from 'react';
 // Add `type ThreeElements` to import to manually extend JSX namespace for R3F components
 import { Canvas, type ThreeElements, type ThreeEvent } from '@react-three/fiber';

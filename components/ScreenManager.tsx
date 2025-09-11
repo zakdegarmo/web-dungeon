@@ -110,7 +110,24 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ screens, doors, scen
     );
   };
 
-  // When a new config is loaded via props, sync the local state for the room and layout radii.
+  // When a new config is loaded via props, or props change from outside (e.g. 3D transforms),
+  // sync the local state to ensure the control panel has the latest data.
+  useEffect(() => {
+    setLocalScreens(screens);
+  }, [screens]);
+  
+  useEffect(() => {
+    setLocalDoors(doors);
+  }, [doors]);
+  
+  useEffect(() => {
+    setLocalObjects(sceneObjects);
+  }, [sceneObjects]);
+
+  useEffect(() => {
+    setLocalBot(mooseBot);
+  }, [mooseBot]);
+
   useEffect(() => {
     setLocalRoomConfig(roomConfig);
     setScreenLayoutRadius(roomConfig.size * 0.72);

@@ -1,3 +1,5 @@
+// FIX: Add reference to react-three/fiber types to ensure JSX elements are recognized.
+/// <reference types="@react-three/fiber" />
 import React, { useRef, useMemo } from 'react';
 import { useGLTF, Html } from '@react-three/drei';
 import type { Group } from 'three';

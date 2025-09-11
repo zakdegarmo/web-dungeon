@@ -1,4 +1,5 @@
-
+// FIX: Add reference to react-three/fiber types to ensure JSX elements are recognized.
+/// <reference types="@react-three/fiber" />
 import React, { Suspense, useMemo, useEffect, useRef, useState, useCallback, useLayoutEffect, useImperativeHandle } from 'react';
 import { Canvas, useThree, useFrame, type ThreeEvent, type ThreeElements } from '@react-three/fiber';
 import { TrackballControls, Center, Environment, PointerLockControls, Line, useHelper, Edges } from '@react-three/drei';
