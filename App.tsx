@@ -207,7 +207,7 @@ const initialDoors: DoorState[] = [
 const initialSceneObjects: SceneObjectState[] = [];
 
 const initialMooseBotState: MooseBotState = {
-    url: 'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/RobotExpressive/RobotExpressive.glb',
+    url: '/moose-bot.glb',
     dialogue: 'Hello! I am MOOSE-BOT. Please provide a Gemini API key to chat with me.',
     activeAnimation: 'Idle',
     position: [0, -125, 15],

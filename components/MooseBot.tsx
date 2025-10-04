@@ -100,4 +100,4 @@ export const MooseBot: React.FC<MooseBotProps> = ({ url, dialogue, activeAnimati
 }
 
 // Preload the default model for faster initial load
-useGLTF.preload('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/RobotExpressive/RobotExpressive.glb');
+useGLTF.preload('/moose-bot.glb');
